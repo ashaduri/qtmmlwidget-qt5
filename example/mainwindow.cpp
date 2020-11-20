@@ -47,18 +47,18 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <QtGui/QLabel>
-#include <QtGui/QLayout>
-#include <QtGui/QPixmap>
-#include <QtGui/QToolButton>
-#include <QtGui/QToolBar>
-#include <QtGui/QSplitter>
-#include <QtGui/QMessageBox>
+#include <QFile>
+#include <QTextStream>
+#include <QLabel>
+#include <QLayout>
+#include <QPixmap>
+#include <QToolButton>
+#include <QToolBar>
+#include <QSplitter>
+#include <QMessageBox>
 
 #include <qtmmlwidget.h>
-#include <QtGui/QVBoxLayout>
+#include <QVBoxLayout>
 
 #include "mainwindow.h"
 #include "filebrowser.h"

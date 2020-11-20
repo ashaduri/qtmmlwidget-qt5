@@ -44,8 +44,8 @@
 ** 
 ****************************************************************************/
 
-#include <QtCore/QDir>
-#include <QtCore/QFileInfo>
+#include <QDir>
+#include <QFileInfo>
 
 #include "filebrowser.h"
 #include "mainwindow.h"

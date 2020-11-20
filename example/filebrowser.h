@@ -47,7 +47,7 @@
 #ifndef FILEBROWSER_H
 #define FILEBROWSER_H
 
-#include <QtGui/QListWidget>
+#include <QListWidget>
 
 class FileBrowser : public QListWidget
 {

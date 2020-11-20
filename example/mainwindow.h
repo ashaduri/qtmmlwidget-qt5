@@ -47,9 +47,9 @@
 #ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 //Added by qt3to4:
-#include <QtGui/QLabel>
+#include <QLabel>
 
 class QtMmlWidget;
 class QLabel;
