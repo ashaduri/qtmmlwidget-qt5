@@ -3156,7 +3156,7 @@ void MmlDocument::_dump(const MmlNode *node, QString &indent) const
 {
     if (node == 0) return;
 
-    qWarning((indent + node->toStr()).toLatin1().data());
+    qWarning("%s", qPrintable(QString(indent + node->toStr())));
 
     indent += "  ";
     const MmlNode *child = node->firstChild();
@@ -3436,7 +3436,7 @@ MmlNode *MmlDocument::domToMml(const QDomNode &dom_node, bool *ok, QString *erro
 	    break;
 
 	default:
-	    // exact ammount of children specified - check...
+	    // exact amount of children specified - check...
 	    if (spec->child_spec != child_cnt) {
 		if (errorMsg != 0)
 		    *errorMsg = QString("element ")
@@ -3625,7 +3625,7 @@ QString MmlNode::toStr() const
 
     return QString("%1 %2 mr=%3 pr=%4 dr=%5 ro=(%7, %8) str=%9")
 		.arg(spec->type_str)
-		.arg((unsigned long)this, 0, 16)
+		.arg((quintptr)this, 0, 16)
 		.arg(rectToStr(myRect()))
 		.arg(rectToStr(parentRect()))
 		.arg(rectToStr(deviceRect()))
@@ -3702,7 +3702,7 @@ int MmlNode::scriptlevel(const MmlNode *) const
 	    return parent_sl + expl_sl;
 	}
 	else {
-	    qWarning(("MmlNode::scriptlevel(): bad value " + expl_sl_str).toLatin1().data());
+	    qWarning("MmlNode::scriptlevel(): bad value: %s", qPrintable(expl_sl_str));
 	    return parent_sl;
 	}
     }
@@ -3718,7 +3718,7 @@ int MmlNode::scriptlevel(const MmlNode *) const
     else if (expl_sl_str == "-")
 	return parent_sl - 1;
     else {
-	qWarning(("MmlNode::scriptlevel(): could not parse value: \"" + expl_sl_str + "\"").toLatin1().data());
+	qWarning("MmlNode::scriptlevel(): could not parse value: \"%s\"", qPrintable(expl_sl_str));
 	return parent_sl;
     }
 }
@@ -5425,7 +5425,7 @@ QSize QtMmlWidget::sizeHint() const
     Sets the MathML expression to be rendered. The expression is given
     in the string \a text. If the expression is successfully parsed,
     this method returns true; otherwise it returns false. If an error
-    occured \a errorMsg is set to a diagnostic message, while \a
+    occurred \a errorMsg is set to a diagnostic message, while \a
     errorLine and \a errorColumn contain the location of the error.
     Any of \a errorMsg, \a errorLine and \a errorColumn may be 0,
     in which case they are not set.
@@ -5772,7 +5772,7 @@ static QString decodeEntityValue(QString literal)
     while (!literal.isEmpty()) {
 
 	if (!literal.startsWith("&#")) {
-	    qWarning(("decodeEntityValue(): bad entity literal: \"" + literal + "\"").toLatin1().data());
+	    qWarning("decodeEntityValue(): bad entity literal: \"%s\"", qPrintable(literal));
 	    return QString::null;
 	}
 
@@ -5780,7 +5780,7 @@ static QString decodeEntityValue(QString literal)
 
 	int i = literal.indexOf(';');
 	if (i == -1) {
-	    qWarning(("decodeEntityValue(): bad entity literal: \"" + literal + "\"").toLatin1().data());
+	    qWarning("decodeEntityValue(): bad entity literal: \"%s\"", qPrintable(literal));
 	    return QString::null;
 	}
 
@@ -5788,7 +5788,7 @@ static QString decodeEntityValue(QString literal)
 	literal = literal.right(literal.length() - i - 1);
 
 	if (char_code.isEmpty()) {
-	    qWarning(("decodeEntityValue(): bad entity literal: \"" + literal + "\"").toLatin1().data());
+	    qWarning("decodeEntityValue(): bad entity literal: \"%s\"", qPrintable(literal));
 	    return QString::null;
 	}
 
@@ -5797,7 +5797,7 @@ static QString decodeEntityValue(QString literal)
 	    bool ok;
 	    unsigned c = char_code.toUInt(&ok, 16);
 	    if (!ok) {
-		qWarning(("decodeEntityValue(): bad entity literal: \"" + literal + "\"").toLatin1().data());
+		qWarning("decodeEntityValue(): bad entity literal: \"%s\"", qPrintable(literal));
 		return QString::null;
 	    }
 	    result += QChar(c);
@@ -5806,7 +5806,7 @@ static QString decodeEntityValue(QString literal)
 	    bool ok;
 	    unsigned c = char_code.toUInt(&ok, 10);
 	    if (!ok) {
-		qWarning(("decodeEntityValue(): bad entity literal: \"" + literal + "\"").toLatin1().data());
+		qWarning("decodeEntityValue(): bad entity literal: \"%s\"", qPrintable(literal));
 		return QString::null;
 	    }
 	    result += QChar(c);
@@ -5863,7 +5863,8 @@ const OperSpec *&OperSpecSearchResult::getForm(Mml::FormType f)
 */
 static const OperSpec *searchOperSpecData(const QString &name)
 {
-    const char *name_latin1 = name.toLatin1().data();
+    QByteArray name_latin1_array = name.toLatin1();
+    const char *name_latin1 = name_latin1_array.data();
 
     // binary search
     // establish invariant g_oper_spec_data[begin].name < name < g_oper_spec_data[end].name
@@ -5913,7 +5914,8 @@ static OperSpecSearchResult _mmlFindOperSpec(const QStringList &name_list, Mml::
 	if (spec == 0)
 	    continue;
 
-    	const char *name_latin1 = name.toLatin1().data();
+	QByteArray name_latin1_array = name.toLatin1();
+	const char *name_latin1 = name_latin1_array.data();
 
     	// backtrack to the first instance of name
 	while (spec > g_oper_spec_data && qstrcmp((spec - 1)->name, name_latin1) == 0)
@@ -6297,7 +6299,7 @@ void QtMmlDocument::clear()
     Sets the MathML expression to be rendered. The expression is given
     in the string \a text. If the expression is successfully parsed,
     this method returns true; otherwise it returns false. If an error
-    occured \a errorMsg is set to a diagnostic message, while \a
+    occurred \a errorMsg is set to a diagnostic message, while \a
     errorLine and \a errorColumn contain the location of the error.
     Any of \a errorMsg, \a errorLine and \a errorColumn may be 0,
     in which case they are not set.
