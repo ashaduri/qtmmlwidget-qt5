@@ -44,12 +44,12 @@
 ** 
 ****************************************************************************/
 
-#include <QtGui/QApplication>
-#include <QtCore/QString>
-#include <QtCore/QMap>
-#include <QtGui/QDesktopWidget>
-#include <QtGui/QPainter>
-#include <QtGui/QPaintEvent>
+#include <QApplication>
+#include <QString>
+#include <QMap>
+#include <QDesktopWidget>
+#include <QPainter>
+#include <QPaintEvent>
 
 #include "qtmmlwidget.h"
 
@@ -3117,7 +3117,7 @@ MmlDocument::MmlDocument()
 
     // Some defaults which happen to work on my computer,
     // but probably won't work on other's
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN)
     m_normal_font_name = "Times New Roman";
 #else
     m_normal_font_name = "Century Schoolbook L";
@@ -3385,7 +3385,7 @@ MmlNode *MmlDocument::domToMml(const QDomNode &dom_node, bool *ok, QString *erro
 
     QDomNamedNodeMap dom_attr = dom_node.attributes();
     MmlAttributeMap mml_attr;
-    for (unsigned i = 0; i < dom_attr.length(); ++i) {
+    for (int i = 0; i < dom_attr.length(); ++i) {
 	QDomNode attr_node = dom_attr.item(i);
 	Q_ASSERT(!attr_node.nodeName().isNull());
 	Q_ASSERT(!attr_node.nodeValue().isNull());
@@ -4220,8 +4220,8 @@ MmlTextNode::MmlTextNode(const QString &text, MmlDocument *document)
 {
     m_text = text;
     // Trim whitespace from ends, but keep nbsp and thinsp
-    m_text.remove(QRegExp("^[^\\S\\x00a0\\x2009]+"));
-    m_text.remove(QRegExp("[^\\S\\x00a0\\x2009]+$"));
+    m_text.remove(QRegExp("^[^\\S\\x00a0\\x2009]+", Qt::CaseSensitive, QRegExp::RegExp2));
+    m_text.remove(QRegExp("[^\\S\\x00a0\\x2009]+$", Qt::CaseSensitive, QRegExp::RegExp2));
 
     if (m_text == QString(QChar(0x62, 0x20))	     // &InvisibleTimes;
 	    || m_text == QString(QChar(0x63, 0x20))  // &InvisibleComma;
@@ -5450,7 +5450,7 @@ void QtMmlWidget::paintEvent(QPaintEvent *e)
     QFrame::paintEvent(e);
     QPainter p(this);
     if (e->rect().intersects(contentsRect()))
-        p.setClipRegion(e->region().intersect(contentsRect()));
+        p.setClipRegion(e->region().intersected(contentsRect()));
 
     QSize s = m_doc->size();
     int x = (width() - s.width())/2;
