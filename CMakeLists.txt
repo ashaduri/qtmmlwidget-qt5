@@ -12,6 +12,11 @@ if (NOT DEFINED QTMMLWIDGET_DYNAMIC)
 	set(QTMMLWIDGET_DYNAMIC TRUE)
 endif()
 
+# Set QTMMLWIDGET_BUILD_EXAMPLE to FALSE to avoid building the example
+if (NOT DEFINED QTMMLWIDGET_BUILD_EXAMPLE)
+	set(QTMMLWIDGET_BUILD_EXAMPLE TRUE)
+endif()
+
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -79,3 +84,21 @@ target_include_directories(qtmmlwidget
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
+
+
+set(qtmmlwidget_EXAMPLE_SOURCES
+	example/filebrowser.cpp
+	example/filebrowser.h
+	example/main.cpp
+	example/mainwindow.cpp
+	example/mainwindow.h
+	example/example.qrc
+)
+
+if (QTMMLWIDGET_BUILD_EXAMPLE)
+	add_executable(qtmmlwidget_example ${qtmmlwidget_EXAMPLE_SOURCES})
+	target_link_libraries(qtmmlwidget_example
+		PRIVATE
+			qtmmlwidget
+	)
+endif()
