@@ -49,28 +49,17 @@ if (QTMMLWIDGET_DYNAMIC)
 		# Put the import library along with dll
 		set_target_properties(qtmmlwidget PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 	endif()
+
 else()
 	add_library(qtmmlwidget STATIC ${qtmmlwidget_LIB_SOURCES})
-endif()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(qtmmlwidget PRIVATE
-		-Wno-shadow -Wno-format-security -Wno-conversion -Wno-redundant-decls -Wno-cast-qual
-		-Wno-zero-as-null-pointer-constant -Wno-unused-macros
-	)
-	if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-		target_compile_options(qtmmlwidget PRIVATE -Wno-unreachable-code -Wno-deprecated-declarations)
-	endif()
-	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-		target_compile_options(qtmmlwidget PRIVATE -Wno-implicit-fallthrough)
+	# This library doesn't use gcc visibility attributes under non-win32, so
+	# set the default to visible
+	if (NOT WIN32)
+		target_compile_options(qtmmlwidget PRIVATE -fvisibility=default)
 	endif()
 endif()
 
-# This library doesn't use gcc visibility attributes under non-win32, so
-# set the default to visible
-if (NOT WIN32)
-	target_compile_options(qtmmlwidget PRIVATE -fvisibility=default)
-endif()
 
 target_link_libraries(qtmmlwidget
 	PUBLIC  # These are part of the API
@@ -85,6 +74,53 @@ target_include_directories(qtmmlwidget
 )
 
 
+
+# Enable warnings
+if (MSVC)
+	# warning level 4
+	target_compile_options(qtmmlwidget
+		PRIVATE
+			/W4
+	)
+else()
+	# warning level 4
+	target_compile_options(qtmmlwidget
+		PRIVATE
+			-Wall -Wextra
+	)
+endif()
+
+# Disable unnecessary warnings
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	target_compile_options(qtmmlwidget
+		PRIVATE
+			-Wno-shadow
+			-Wno-format-security
+			-Wno-conversion
+			-Wno-redundant-decls
+			-Wno-cast-qual
+			-Wno-zero-as-null-pointer-constant
+			-Wno-unused-macros
+			-Wno-implicit-fallthrough
+	)
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		target_compile_options(qtmmlwidget
+			PRIVATE
+				-Wno-unreachable-code
+				-Wno-deprecated-declarations
+		)
+	endif()
+	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		target_compile_options(qtmmlwidget
+			PRIVATE
+				-Wno-implicit-fallthrough
+		)
+	endif()
+endif()
+
+
+
+# --- Example
 
 set(qtmmlwidget_EXAMPLE_SOURCES
 	example/filebrowser.cpp
@@ -101,4 +137,19 @@ if (QTMMLWIDGET_BUILD_EXAMPLE)
 		PRIVATE
 			qtmmlwidget
 	)
+
+	if (MSVC)
+		# warning level 4
+		target_compile_options(qtmmlwidget_example
+			PRIVATE
+				/W4
+		)
+	else()
+		# warning level 4
+		target_compile_options(qtmmlwidget_example
+			PRIVATE
+				-Wall -Wextra
+		)
+	endif()
+
 endif()
