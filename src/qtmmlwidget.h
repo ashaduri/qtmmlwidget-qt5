@@ -47,12 +47,12 @@
 #ifndef QTMMLWIDGET_H
 #define QTMMLWIDGET_H
 
-#include <QtGui/QFrame>
-#include <QtXml/QtXml>
+#include <QFrame>
+#include <QtXml>
 
 class MmlDocument;
 
-#if defined(Q_WS_WIN)
+#if defined(Q_OS_WIN)
 #  if !defined(QT_QTMMLWIDGET_EXPORT) && !defined(QT_QTMMLWIDGET_IMPORT)
 #    define QT_QTMMLWIDGET_EXPORT
 #  elif defined(QT_QTMMLWIDGET_IMPORT)
