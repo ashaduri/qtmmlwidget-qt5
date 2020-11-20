@@ -107,13 +107,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clan
 		target_compile_options(qtmmlwidget
 			PRIVATE
 				-Wno-unreachable-code
-				-Wno-deprecated-declarations
-		)
-	endif()
-	if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-		target_compile_options(qtmmlwidget
-			PRIVATE
-				-Wno-implicit-fallthrough
 		)
 	endif()
 endif()
