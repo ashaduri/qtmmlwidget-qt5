@@ -14,20 +14,11 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest]
         include:
         - os: macos-latest
-          TARGET: x86_64-apple-darwin
-          COMPILER: clang
-          LINKER: clang
-
         - os: ubuntu-latest
-          TARGET: x86_64-unknown-linux
-          COMPILER: gcc
-          LINKER: gcc
-
         - os: windows-latest
 
     steps:
     - uses: actions/checkout@v2
-    - run: echo ${{matrix.TARGET}}
     
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
