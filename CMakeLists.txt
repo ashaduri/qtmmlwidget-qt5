@@ -7,9 +7,9 @@ project(qtmmlwidget-qt5 VERSION 2.4.2)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Set QTMMLWIDGET_DYNAMIC to FALSE to compile a static library
-if (NOT DEFINED QTMMLWIDGET_DYNAMIC)
-	set(QTMMLWIDGET_DYNAMIC TRUE)
+# Set QTMMLWIDGET_STATIC to TRUE to compile a static library
+if (NOT DEFINED QTMMLWIDGET_STATIC)
+	set(QTMMLWIDGET_STATIC FALSE)
 endif()
 
 # Set QTMMLWIDGET_BUILD_EXAMPLE to FALSE to avoid building the example
@@ -37,18 +37,18 @@ set(qtmmlwidget_LIB_SOURCES
 )
 
 
-if (QTMMLWIDGET_DYNAMIC)
-	add_library(qtmmlwidget SHARED ${qtmmlwidget_LIB_SOURCES})
-	# Put the import library along with dll
-	set_target_properties(qtmmlwidget PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-
-else()
+if (QTMMLWIDGET_STATIC)
 	# Static library
 	add_library(qtmmlwidget STATIC ${qtmmlwidget_LIB_SOURCES})
 	target_compile_definitions(qtmmlwidget
 		PUBLIC
 			QT_QTMMLWIDGET_LIBRARY_STATIC
 	)
+else()
+	# Dynamic library
+	add_library(qtmmlwidget SHARED ${qtmmlwidget_LIB_SOURCES})
+	# Put the import library along with dll
+	set_target_properties(qtmmlwidget PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 endif()
 
 # Handle visibility symbols
