@@ -77,32 +77,16 @@ class MmlDocument;
 // QT_QTMMLWIDGET_LIBRARY_BUILD must be defined when building this library (whether statically or dynamically).
 #ifndef QT_QTMMLWIDGET_LIBRARY_STATIC
 	#ifdef QT_QTMMLWIDGET_LIBRARY_BUILD  /* building the shared library */
-		#define QT_QTMMLWIDGET_LIBRARY_EXPORT QT_QTMMLWIDGET_DECL_EXPORT
+		#define QT_QTMMLWIDGET_EXPORT QT_QTMMLWIDGET_DECL_EXPORT
 	#else  /* using the shared library */
-		#define QT_QTMMLWIDGET_LIBRARY_EXPORT QT_QTMMLWIDGET_DECL_IMPORT
+		#define QT_QTMMLWIDGET_EXPORT QT_QTMMLWIDGET_DECL_IMPORT
 	#endif
 #endif
-#ifndef QT_QTMMLWIDGET_LIBRARY_EXPORT
-	#define QT_QTMMLWIDGET_LIBRARY_EXPORT
+#ifndef QT_QTMMLWIDGET_EXPORT
+	#define QT_QTMMLWIDGET_EXPORT
 #endif
 
 
-
-#if defined(Q_OS_WIN)
-#  if !defined(QT_QTMMLWIDGET_EXPORT) && !defined(QT_QTMMLWIDGET_IMPORT)
-#    define QT_QTMMLWIDGET_EXPORT
-#  elif defined(QT_QTMMLWIDGET_IMPORT)
-#    if defined(QT_QTMMLWIDGET_EXPORT)
-#      undef QT_QTMMLWIDGET_EXPORT
-#    endif
-#    define QT_QTMMLWIDGET_EXPORT __declspec(dllimport)
-#  elif defined(QT_QTMMLWIDGET_EXPORT)
-#    undef QT_QTMMLWIDGET_EXPORT
-#    define QT_QTMMLWIDGET_EXPORT __declspec(dllexport)
-#  endif
-#else
-#  define QT_QTMMLWIDGET_EXPORT
-#endif
 
 class QT_QTMMLWIDGET_EXPORT QtMmlWidget : public QFrame
 {
