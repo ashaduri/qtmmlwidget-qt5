@@ -52,6 +52,42 @@
 
 class MmlDocument;
 
+
+// Visibility macro helpers
+#ifndef QT_QTMMLWIDGET_DECL_EXPORT
+	#ifdef _WIN32
+		#define QT_QTMMLWIDGET_DECL_EXPORT __declspec(dllexport)
+	#elif __GNUC__ >= 4
+		#define QT_QTMMLWIDGET_DECL_EXPORT __attribute__((visibility("default")))
+	#else
+		#define QT_QTMMLWIDGET_DECL_EXPORT
+	#endif
+#endif
+#ifndef QT_QTMMLWIDGET_DECL_IMPORT
+	#ifdef _WIN32
+		#define QT_QTMMLWIDGET_DECL_IMPORT __declspec(dllimport)
+	#else
+		#define QT_QTMMLWIDGET_DECL_IMPORT
+	#endif
+#endif
+
+
+// If using this as a static library, the build system must define
+// QT_QTMMLWIDGET_LIBRARY_STATIC when both the building this library, and using it.
+// QT_QTMMLWIDGET_LIBRARY_BUILD must be defined when building this library (whether statically or dynamically).
+#ifndef QT_QTMMLWIDGET_LIBRARY_STATIC
+	#ifdef QT_QTMMLWIDGET_LIBRARY_BUILD  /* building the shared library */
+		#define QT_QTMMLWIDGET_LIBRARY_EXPORT QT_QTMMLWIDGET_DECL_EXPORT
+	#else  /* using the shared library */
+		#define QT_QTMMLWIDGET_LIBRARY_EXPORT QT_QTMMLWIDGET_DECL_IMPORT
+	#endif
+#endif
+#ifndef QT_QTMMLWIDGET_LIBRARY_EXPORT
+	#define QT_QTMMLWIDGET_LIBRARY_EXPORT
+#endif
+
+
+
 #if defined(Q_OS_WIN)
 #  if !defined(QT_QTMMLWIDGET_EXPORT) && !defined(QT_QTMMLWIDGET_IMPORT)
 #    define QT_QTMMLWIDGET_EXPORT

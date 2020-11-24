@@ -39,26 +39,23 @@ set(qtmmlwidget_LIB_SOURCES
 
 if (QTMMLWIDGET_DYNAMIC)
 	add_library(qtmmlwidget SHARED ${qtmmlwidget_LIB_SOURCES})
-	if (WIN32)
-		target_compile_definitions(qtmmlwidget
-			PRIVATE
-				QT_QTMMLWIDGET_EXPORT
-			INTERFACE
-				QT_QTMMLWIDGET_IMPORT
-		)
-		# Put the import library along with dll
-		set_target_properties(qtmmlwidget PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-	endif()
+	# Put the import library along with dll
+	set_target_properties(qtmmlwidget PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
 else()
+	# Static library
 	add_library(qtmmlwidget STATIC ${qtmmlwidget_LIB_SOURCES})
-
-	# This library doesn't use gcc visibility attributes under non-win32, so
-	# set the default to visible
-	if (NOT WIN32)
-		target_compile_options(qtmmlwidget PRIVATE -fvisibility=default)
-	endif()
+	target_compile_definitions(qtmmlwidget
+		PUBLIC
+			QT_QTMMLWIDGET_LIBRARY_STATIC
+	)
 endif()
+
+# Handle visibility symbols
+target_compile_definitions(qtmmlwidget
+	PRIVATE
+		QT_QTMMLWIDGET_LIBRARY_BUILD
+)
 
 
 target_link_libraries(qtmmlwidget
