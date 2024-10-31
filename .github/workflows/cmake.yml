@@ -18,12 +18,12 @@ jobs:
         - os: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Install Qt
-      uses: jurplel/install-qt-action@v2
+      uses: jurplel/install-qt-action@v4
       with:
-        version: 5.15.0
+        version: 5.15.2
 
     - name: Create Build Environment (Dynamic Build)
       run: cmake -E make_directory build-dynamic
