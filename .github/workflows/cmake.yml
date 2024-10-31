@@ -11,9 +11,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        # We use macos-13 because Qt5 has issues with macos-latest which is arm-only.
+        os: [macos-13, ubuntu-latest, windows-latest]
         include:
-        - os: macos-latest
+        - os: macos-13
         - os: ubuntu-latest
         - os: windows-latest
 
